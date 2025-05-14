@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Join Room</title></head>
+<body>
+  <h2>Enter your name and room ID</h2>
+  <input id="username" placeholder="Name" />
+  <input id="room" placeholder="Room ID" />
+  <button onclick="join()">Join</button>
+
+  <script>
+    function join() {
+      const name = document.getElementById("username").value;
+      const room = document.getElementById("room").value;
+      if (name && room) {
+        localStorage.setItem("username", name);
+        localStorage.setItem("room", room);
+        window.location.href = "game.html";
+      }
+    }
+  </script>
+</body>
+</html>
