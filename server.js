@@ -1,29 +1,14 @@
-const express = require("express");
-const http = require("http");
-const path = require("path");
-const { Server } = require("socket.io");
-
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const path = require('path');
 const app = express();
-const server = http.createServer(app); // ← define server first!
-const io = new Server(server);         // ← then pass it into socket.io
+const server = http.createServer(app);
+const io = new Server(server);
 
-const PORT = process.env.PORT || 3000;
+app.use(express.static('public'));
 
 const rooms = {};
-
-app.use(express.static(path.join(__dirname, "public")));
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
-
-// Your socket.io code here
-// Example:
-// io.on("connection", (socket) => { ... });
-
-
-
-
 
 io.on("connection", (socket) => {
     socket.on("join-room", ({ roomId, username }) => {
@@ -119,10 +104,6 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
 function getWinner(board) {
     const combos = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -137,4 +118,5 @@ function getWinner(board) {
     return null;
 }
 
-http.listen(3000, () => console.log("Running on http://localhost:3000"));
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
