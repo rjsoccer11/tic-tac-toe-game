@@ -1,9 +1,11 @@
 const express = require("express");
-const app = express();
 const http = require("http");
-const { Server } = require("socket.io");
 const path = require("path");
-const io = new Server(server);
+const { Server } = require("socket.io");
+
+const app = express();
+const server = http.createServer(app); // ← define server first!
+const io = new Server(server);         // ← then pass it into socket.io
 
 const PORT = process.env.PORT || 3000;
 
@@ -12,7 +14,7 @@ const rooms = {};
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Your socket.io code here
@@ -118,7 +120,7 @@ io.on("connection", (socket) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
 
 function getWinner(board) {
